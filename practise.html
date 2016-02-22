@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Pitch Detector</title>
+		<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+	</head>
+	<body>
+     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="js/vexflow.min.js"></script>
+<div class="panel panel-default">
+		<div id="detector" class="vague">
+			<div class="pitch"><span id="pitch">--</span>Hz</div>
+			<div class="note"><span id="note">--</span></div>
+			<canvas id="output" width=300 height=42></canvas>
+			<div id="detune">
+				<span id="detune_amt">--</span>
+				<span id="flat">cents &#9837;</span>
+				<span id="sharp">cents &#9839;</span>
+				<span><span class="value"></span></span>
+			</div>
+		</div>
+</div>
+<div class="test">
+  <canvas width=520 height=110></canvas>
+</div>
+		<script src="js/practise.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,69 @@
+
+body {
+   font: 14pt 'Alike', sans-serif;
+   background-color: lightblue;
+}
+#note {
+  font-size: 164px;
+}
+.droptarget {
+  background-color: #348781
+}
+div.confident {
+  color: black;
+}
+div.vague {
+  color: lightgrey;
+}
+#note {
+  display: inline-block; height:180px; text-align: left;
+}
+#detector {
+  text-align: center;
+  padding-top: 10px;
+
+}
+#output {
+  width: 300px; height: 42px;
+}
+#flat {
+  display: none;
+}
+#sharp {
+  display: none;
+}
+.flat #flat {
+  display: inline;
+}
+.sharp #sharp {
+  display: inline;
+}
+.panel {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+}
+#stave {
+  width:300px;
+  height: 100px;
+  margin: 0 auto;
+}
+canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.flatColour{
+  color: red;
+}
+.sharpColour{
+  color:green;
+}
+.absoluteColour {
+  color:yellow;
+}
+.value{
+  display: block;
+  width: 100px;
+  height: 100px;
+}
