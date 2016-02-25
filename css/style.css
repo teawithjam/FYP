@@ -67,3 +67,20 @@ canvas {
   width: 100px;
   height: 100px;
 }
+@media screen and (max-width: 980px) {
+    body {
+        background-color: lightgreen;
+    }
+    .mediaquery {
+      width: 500px;
+      height: 300px;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+    }
+    
+
+}
