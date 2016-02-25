@@ -397,7 +397,7 @@ function getColour(detune){
 			var x = (val - 55);  // should never be zero
 			var col = (255 / 45);
 			var y = (x * col);
-			var r = (255 - y), 
+			var r = (255 - y),
 					g = 255,
 					b = 0;
 		}

@@ -251,7 +251,7 @@ function updatePitch( time ) {
 	 	pitch = ac;
 	 	pitchElem.innerText = Math.round( pitch ) ;
 	 	var note =  noteFromPitch( pitch );
-
+		var pitch = Math.round(pitch);
 		var octave ='/4';
 		if (pitch >= 220 && pitch<= 440){
 			octave = "/3";
@@ -346,7 +346,7 @@ if (pitch) { //to use for the long method
 		if (pitch >= 360 && pitch <= 381 || pitch >= 719 && pitch <= 762) {
 			noteElem.innerHTML = "F#/G&#9837";
 		}
-
+		console.log(pitch)
 	}
 
 		if (detune == 0 ) {
