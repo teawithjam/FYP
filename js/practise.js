@@ -138,11 +138,13 @@ function gotStream(stream) {
     mediaStreamSource = audioContext.createMediaStreamSource(stream);
 		var biquadFilter = audioContext.createBiquadFilter();
 		biquadFilter.type = 'lowpass';
-		biquadFilter.pitch; //reference mozilla web audio api
-    // Connect it to the destination.
+		//biquadFilter.pitch; //reference mozilla web audio api
+		biquadFilter.frequency.value = 1050;
+    mediaStreamSource.connect(biquadFilter);
+		// Connect it to the destination.
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
-    mediaStreamSource.connect( analyser );
+    biquadFilter.connect( analyser );
     updatePitch();
 }
 
