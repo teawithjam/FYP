@@ -144,8 +144,10 @@ function gotStream(stream) {
 		// Connect it to the destination.
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
-    biquadFilter.connect( analyser );
+    biquadFilter.connect( analyser ); //if i were to remove the biquad filter, biquadfilter.connect would become
+		//mediaStreamSource.connect instead and anything with biquad filter can be removed
     updatePitch();
+		console.log(stream);
 }
 
 var rafID = null;
@@ -403,13 +405,13 @@ function getColour(detune){
 			//var perc = (val / 45) * 100; // percentage of va e.g if val = 9 -> (9/45) * 100 = 20% of 45
 			var col = (255 / 45);   // 5.666666667
 			var r = 255, //Math.floor((255 * (100 - val)) / 100), //(col * val),
-					g = (col * val),
+					g = Math.round(col * val),
 					b = 0;
 		} else if (val > 55) {
 			var x = (val - 55);  // should never be zero
 			var col = (255 / 45);
 			var y = (x * col);
-			var r = (255 - y), //((col * val) * -1),
+			var r = Math.round(255 - y), //((col * val) * -1),
 					g = 255,
 					b = 0;
 		}
