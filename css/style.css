@@ -67,6 +67,17 @@ canvas {
   width: 100px;
   height: 100px;
 }
+
+.glass {
+  background-color: lightblue;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  opacity: 0.9;
+}
+
 @media screen and (max-width: 980px) {
     body {
         background-color: lightgreen;
@@ -81,6 +92,6 @@ canvas {
       right: 0;
       position: absolute;
     }
-    
+
 
 }

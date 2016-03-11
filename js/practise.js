@@ -39,11 +39,22 @@ var interval;
 var centsPerHz;
 var absoluteHz;
 
+var listening = false;
+
 
 
 var canvas, ctx, stave, renderer;
 
 window.onload = function() {
+
+	$('.glass').click(function(){
+		$('.glass').hide();
+		listening = true;
+	});
+	$('#detector').click(function(){
+		$('.glass').show();
+		listening = false;
+	});
 
 	canvas = $("div.test canvas")[0];
 	  renderer = new Vex.Flow.Renderer(canvas,
@@ -112,20 +123,20 @@ function getUserMedia(dictionary, callback) {
 }
 
 function gotStream(stream) {
-    // Create an AudioNode from the stream.
-    mediaStreamSource = audioContext.createMediaStreamSource(stream);
-		var biquadFilter = audioContext.createBiquadFilter();
-		biquadFilter.type = 'lowpass';
-		//biquadFilter.pitch; //reference mozilla web audio api
-		biquadFilter.frequency.value = 1050;
-    mediaStreamSource.connect(biquadFilter);
-		// Connect it to the destination.
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 2048;
-    biquadFilter.connect( analyser ); //if i were to remove the biquad filter, biquadfilter.connect would become
-		//mediaStreamSource.connect instead and anything with biquad filter can be removed
-    updatePitch();
-		console.log(stream);
+	    // Create an AudioNode from the stream.
+	    mediaStreamSource = audioContext.createMediaStreamSource(stream);
+			var biquadFilter = audioContext.createBiquadFilter();
+			biquadFilter.type = 'lowpass';
+			//biquadFilter.pitch; //reference mozilla web audio api
+			biquadFilter.frequency.value = 1050;
+	    mediaStreamSource.connect(biquadFilter);
+			// Connect it to the destination.
+	    analyser = audioContext.createAnalyser();
+	    analyser.fftSize = 2048;
+	    biquadFilter.connect( analyser ); //if i were to remove the biquad filter, biquadfilter.connect would become
+			//mediaStreamSource.connect instead and anything with biquad filter can be removed
+	    updatePitch();
+			console.log(stream);
 }
 
 var rafID = null;
@@ -208,6 +219,9 @@ function autoCorrelate( buf, sampleRate ) {
 }
 
 function updatePitch( time ) {
+	if(listening){
+
+
 	var cycles = [];
 	analyser.getFloatTimeDomainData( buf );
 	var ac = autoCorrelate( buf, audioContext.sampleRate );
@@ -242,7 +256,7 @@ function updatePitch( time ) {
 			new Vex.Flow.StaveNote({ keys: ["b/5"], duration: "q" });
 		}
 
-if (pitch) { //to use for the long method
+		if (pitch) { //to use for the long method
 		//if (pitch >= 197 && pitch <= 1017){
 				noteElem.innerHTML = noteStrings[note%12];
         //console.log(noteStrings[note%12][1]);
@@ -280,7 +294,7 @@ if (pitch) { //to use for the long method
 	Vex.Flow.Formatter.FormatAndDraw(ctx, stave, notes);
 
 
-//note detection
+	//note detection
   //Long way of separating frequencies to identify the notes
 	// It has been done like this because the coder understands this way and not the shorter method commented above
 
@@ -322,9 +336,10 @@ if (pitch) { //to use for the long method
 		}
 		console.log(pitch);
 	}
-
-	if (!window.requestAnimationFrame)
+}
+	if (!window.requestAnimationFrame){
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
+	}
 	rafID = window.requestAnimationFrame( updatePitch );
 }
 
