@@ -40,6 +40,7 @@ var centsPerHz;
 var absoluteHz;
 
 
+
 var canvas, ctx, stave, renderer;
 
 window.onload = function() {
@@ -82,7 +83,7 @@ window.onload = function() {
 
 	var notes = [
 	// note displayed when no sound is there A4
-	new Vex.Flow.StaveNote({ keys: ["a/4"], duration: "q" }),
+	new Vex.Flow.StaveNote({ keys: ["a/4"], duration: "q" })
 		//addAccidental(0, new Vex.Flow.Accidental("#")).addDotToAll(),
 ];
 
@@ -137,12 +138,16 @@ function gotStream(stream) {
     mediaStreamSource = audioContext.createMediaStreamSource(stream);
 		var biquadFilter = audioContext.createBiquadFilter();
 		biquadFilter.type = 'lowpass';
-		biquadFilter.pitch; //reference mozilla web audio api
-    // Connect it to the destination.
+		//biquadFilter.pitch; //reference mozilla web audio api
+		biquadFilter.frequency.value = 1050;
+    mediaStreamSource.connect(biquadFilter);
+		// Connect it to the destination.
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
-    mediaStreamSource.connect( analyser );
+    biquadFilter.connect( analyser ); //if i were to remove the biquad filter, biquadfilter.connect would become
+		//mediaStreamSource.connect instead and anything with biquad filter can be removed
     updatePitch();
+		console.log(stream);
 }
 
 var rafID = null;
@@ -250,16 +255,22 @@ function updatePitch( time ) {
 	 	pitch = ac;
 	 	pitchElem.innerText = Math.round( pitch ) ;
 	 	var note =  noteFromPitch( pitch );
-
+		var pitch = Math.round(pitch);
 		var octave ='/4';
 		if (pitch >= 220 && pitch<= 440){
 			octave = "/3";
 		}
-		if (pitch >= 440 && pitch<= 880){
+		else if (pitch >= 440 && pitch<= 880){
 			octave = "/4";
 		}
-		if (pitch >= 880 && pitch<= 1760){
+		else if (pitch >= 880 && pitch <= 1760){
 			octave = "/5";
+		}
+		else if (pitch < 220){
+			new Vex.Flow.StaveNote({ keys: ["g/3"], duration: "q" })
+		}
+		else if (pitch > 1760){
+			new Vex.Flow.StaveNote({ keys: ["b/5"], duration: "q" })
 		}
 
 if (pitch) { //to use for the long method
@@ -294,12 +305,14 @@ if (pitch) { //to use for the long method
 		var detune = centsOffFromPitch( pitch, note ); //KEEP FOREVER
 		var colour = getColour(detune);
 		notes[0].setStyle({strokeStyle: colour, fillStyle: colour});
+
 	// Helper function to justify and draw a 4/4 voice
 	Vex.Flow.Formatter.FormatAndDraw(ctx, stave, notes);
 
 
 //note detection
   //Long way of separating frequencies to identify the notes
+	// It has been done like this because the coder understands this way and not the shorter method commented above
 
 		if (pitch >= 196 && pitch <= 202 || pitch >= 381 && pitch <= 404 || pitch >= 762 && pitch <= 807 ) {
 			noteElem.innerHTML = "G";
@@ -337,7 +350,7 @@ if (pitch) { //to use for the long method
 		if (pitch >= 360 && pitch <= 381 || pitch >= 719 && pitch <= 762) {
 			noteElem.innerHTML = "F#/G&#9837";
 		}
-
+		console.log(pitch)
 	}
 
 		if (detune == 0 ) {
@@ -349,14 +362,14 @@ if (pitch) { //to use for the long method
 				detuneElem.className = "flat";
 				$('.note').addClass('flatColour');
 				//make the colour in the box go red
-				//console.log(detune);
+			//	console.log(detune);
 			}
 			else if (detune > 0)
 			{
 				detuneElem.className = "sharp";
 				$('.note').addClass('sharpColour');
 				// make the colour in the box go green
-				//console.log(detune);
+			//	console.log(detune);
 			detuneAmount.innerHTML = Math.abs( detune );
 			}
 		} 			//console.log(detune);
@@ -389,15 +402,16 @@ function getColour(detune){
 		});
 	} else {
 		if (val < 45) {
+			//var perc = (val / 45) * 100; // percentage of va e.g if val = 9 -> (9/45) * 100 = 20% of 45
 			var col = (255 / 45);   // 5.666666667
-			var r = 255,
-					g = (col * val),
+			var r = 255, //Math.floor((255 * (100 - val)) / 100), //(col * val),
+					g = Math.round(col * val),
 					b = 0;
 		} else if (val > 55) {
 			var x = (val - 55);  // should never be zero
 			var col = (255 / 45);
 			var y = (x * col);
-			var r = (255 - y),
+			var r = Math.round(255 - y), //((col * val) * -1),
 					g = 255,
 					b = 0;
 		}

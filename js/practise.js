@@ -53,28 +53,6 @@ window.onload = function() {
 	  stave = new Vex.Flow.Stave(10, 0, 500);
 	  stave.addClef("treble").setContext(ctx).draw();
 
-		var notes = [
-  /*  // Dotted eighth E##
-    new Vex.Flow.StaveNote({ keys: ["e##/5"], duration: "8d" }).
-      addAccidental(0, new Vex.Flow.Accidental("##")).addDotToAll(),
-
-    // Sixteenth Eb
-    new Vex.Flow.StaveNote({ keys: ["eb/5"], duration: "16" }).
-      addAccidental(0, new Vex.Flow.Accidental("b")),
-
-    // Half D
-    new Vex.Flow.StaveNote({ keys: ["d/5"], duration: "h" }),
-
-    // Quarter Cm#5
-    new Vex.Flow.StaveNote({ keys: ["c/5", "eb/5", "g#/5"], duration: "q" }).
-      addAccidental(1, new Vex.Flow.Accidental("b")).
-      addAccidental(2, new Vex.Flow.Accidental("#"))*/
-
-
-  ];
-
-  // Helper function to justify and draw a 4/4 voice
-  Vex.Flow.Formatter.FormatAndDraw(ctx, stave, notes);
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
