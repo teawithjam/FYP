@@ -93,7 +93,7 @@ Vex.Flow.Formatter.FormatAndDraw(ctx, stave, notes);
 							"optional": []
 					},
 			}, gotStream);
-}
+};
 
 function error() {
     alert('Stream generation failed.');
@@ -148,15 +148,6 @@ function centsOffFromPitch( frequency, note ) {
 	return Math.floor( 1200 * Math.log( frequency / frequencyFromNoteNumber( note ))/Math.log(2) );
 }
 
-function centsPerHz(){
-	if (minPitch === 196){
-		var centsPerHz = 50 / (maxPitch - minPitch);
-
-	} else {
-	var centsPerHz = 100 / (maxPitch - minPitch);
-}
-	return centsPerHz;
-}
 
 
 var MIN_SAMPLES = 0;  // will be initialized when AudioContext is created.
@@ -217,7 +208,7 @@ function autoCorrelate( buf, sampleRate ) {
 }
 
 function updatePitch( time ) {
-	var cycles = new Array;
+	var cycles = [];
 	analyser.getFloatTimeDomainData( buf );
 	var ac = autoCorrelate( buf, audioContext.sampleRate );
 	// TODO: Paint confidence meter on canvasElem here.
@@ -245,10 +236,10 @@ function updatePitch( time ) {
 			octave = "/5";
 		}
 		else if (pitch < 220){
-			new Vex.Flow.StaveNote({ keys: ["g/3"], duration: "q" })
+			new Vex.Flow.StaveNote({ keys: ["g/3"], duration: "q" });
 		}
 		else if (pitch > 1760){
-			new Vex.Flow.StaveNote({ keys: ["b/5"], duration: "q" })
+			new Vex.Flow.StaveNote({ keys: ["b/5"], duration: "q" });
 		}
 
 if (pitch) { //to use for the long method
@@ -265,17 +256,18 @@ if (pitch) { //to use for the long method
 		stave.addClef("treble").setContext(ctx).draw();
 		// The moving note if you want to play a g#, it adds a sharp to the stave
 		// not used to say that the g# is sharp
-    if (noteStrings[note%12][1] == undefined) {
-      var notes = [
+		var notes;
+    if (noteStrings[note%12][1] === undefined) {
+       notes = [
         new Vex.Flow.StaveNote({ keys: [noteStrings[note%12] + octave], duration: "q" })
       ];
     } else if (noteStrings[note%12][1] == "#") {
-      var notes = [
+        notes = [
         new Vex.Flow.StaveNote({ keys: [noteStrings[note%12] + octave], duration: "q" }).
   			   addAccidental(0, new Vex.Flow.Accidental("#"))
       ];
     } else {
-      var notes = [
+       notes = [
         new Vex.Flow.StaveNote({ keys: [noteStrings[note%12] + octave], duration: "q" }).
   			   addAccidental(0, new Vex.Flow.Accidental("b")) //This should never happen
       ];
@@ -328,36 +320,8 @@ if (pitch) { //to use for the long method
 		if (pitch >= 360 && pitch <= 381 || pitch >= 719 && pitch <= 762) {
 			noteElem.innerHTML = "F#/G&#9837";
 		}
-		console.log(pitch)
+		console.log(pitch);
 	}
-
-		if (detune == 0 ) {
-			detuneElem.className = "";
-			detuneAmount.innerHTML = "--";
-		} else {
-			if (detune < 0)
-			{
-				detuneElem.className = "flat";
-				$('.note').addClass('flatColour');
-				//make the colour in the box go red
-			//	console.log(detune);
-			}
-			else if (detune > 0)
-			{
-				detuneElem.className = "sharp";
-				$('.note').addClass('sharpColour');
-				// make the colour in the box go green
-			//	console.log(detune);
-			detuneAmount.innerHTML = Math.abs( detune );
-			}
-		} 			//console.log(detune);
-//getColour(detune);
-
-function actualHz (detune){ //not entirely sure this is needed now :/
-	var actualHz = absoluteHz + (detune / centsPerHz);
-	return actualHz;
-}
-
 
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
@@ -365,9 +329,11 @@ function actualHz (detune){ //not entirely sure this is needed now :/
 }
 
 function getColour(detune){
-	span = $('span'),
+	span = $('span');
 	val = parseInt(detune + 50); //detune is values between -50 & 50. adding 50 to it makes the values between 0 & 100
-															// to make this function easier to use and understand.
+														// to make this function easier to use and understand.
+	var col = (255 / 45);   // 5.666666667
+	var r, g, b ;
 	if (val > 100) {
 		val = 100;
 	}
@@ -380,20 +346,17 @@ function getColour(detune){
 		});
 	} else {
 		if (val < 45) {
-			//var perc = (val / 45) * 100; // percentage of va e.g if val = 9 -> (9/45) * 100 = 20% of 45
-			var col = (255 / 45);   // 5.666666667
-			var r = 255, //Math.floor((255 * (100 - val)) / 100), //(col * val),
-					g = Math.round(col * val),
+			    r = 255; //Math.floor((255 * (100 - val)) / 100), //(col * val),
+					g = Math.round(col * val);
 					b = 0;
 		} else if (val > 55) {
 			var x = (val - 55);  // should never be zero
-			var col = (255 / 45);
 			var y = (x * col);
-			var r = Math.round(255 - y), //((col * val) * -1),
-					g = 255,
+			    r = Math.round(255 - y); //((col * val) * -1),
+					g = 255;
 					b = 0;
 		}
-		console.log('r' + r + ' ' + 'g' + g + ' ' + 'b' + b)
+		console.log('r' + r + ' ' + 'g' + g + ' ' + 'b' + b);
 	span.css({
 		color: "rgb(" + r + "," + g + "," + b + ")"
 	}); }
