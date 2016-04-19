@@ -237,7 +237,7 @@ function updatePitch( time ) {
 	 	detectorElem.className = "confident";
 	 	pitch = ac;
 	 	pitchElem.innerText = Math.round( pitch ) ;
-	 	var note =  noteFromPitch( pitch );
+	 	var note =  noteFromPitch( pitch ); //note is a mathematical variable represention of the musical note
 		var pitch = Math.round(pitch);
 		var octave ='/4';
 		if (pitch >= 220 && pitch<= 440){
@@ -362,12 +362,12 @@ function getColour(detune){
 	} else {
 		if (val < 45) {
 			    r = 255; //Math.floor((255 * (100 - val)) / 100), //(col * val),
-					g = Math.round(col * val);
+					g = Math.round(col * val); //this increases the g value making it less red thus more intune
 					b = 0;
 		} else if (val > 55) {
 			var x = (val - 55);  // should never be zero
 			var y = (x * col);
-			    r = Math.round(255 - y); //((col * val) * -1),
+			    r = Math.round(255 - y); //((col * val) * -1), as the r value increases, the colour gets less green and more yellow
 					g = 255;
 					b = 0;
 		}
